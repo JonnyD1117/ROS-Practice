@@ -189,3 +189,89 @@ $ catkin_make
 
 
 ## Understanding ROS Nodes:
+
+Nodes are a fundamental part of the ROS structure.
+
+1. **roscore**: Is the 'base' node which all other ROS nodes require to function properly.
+
+2. **rosnode**: is a command for controlling of a specified node currently running. It includes the following commands...
+   * rosnode ping    *test connectivity to node*
+   * rosnode info    *list active nodes*
+   * rosnode info    *print information about node*
+   * rosnode machine *Lists nodes running on a particular machine*
+   * rosnode kill    *kill a running node*
+   * rosnode cleanpup *purge registration info of unreachable nodes*
+
+3. **rosrun [package_name] [node_name]**: is the command to run an existing node from terminal. Note that this command requires the package name as well as the specific node in the package which the user wants to run.
+
+## Understanding ROS Topics:
+
+ROS nodes communicate using a "publisher/subscriber" model. This means that the information from one node to another node is only possible if the sending node is "publishing" the data, and the receiving node is "subscribing" to the data.
+
+### ROS Topics
+In ROS, the "data" mentioned above, individually label streams called "topics." The point of the topic is to clearly identify which data the receiving node is accepting from the sending node. The following command is used to called determine information available from within a topic.
+
+```
+$ rostopic -h
+
+    rostopic bw     display bandwidth used by topic
+    rostopic echo   print messages to screen
+    rostopic hz     display publishing rate of topic    
+    rostopic list   print information about active topics
+    rostopic pub    publish data to topic
+    rostopic type   print topic type
+```
+
+The form which this data can take a specific 'topic' is structured into a ROS  'Message.' These messages set the structure and data types which the topic will contain.
+
+**rostopic echo**: A call to `rostopic echo` instructs ROS to the print the "Message", for a specified topic, to the terminal. This is useful when analyzing data, and making sure that sensors or nodes are correctly publishing the correct information.
+
+```
+rostopic echo [topic]
+```
+
+
+**rostopic list**: A call to `rostopic list` prints a list of the active (running) topics which are currently being published or subscribed to by any node.
+
+
+```
+$ rostopic list -h
+
+    Usage: rostopic list [/topic]
+
+    Options:
+      -h, --help            show this help message and exit
+      -b BAGFILE, --bag=BAGFILE
+                            list topics in .bag file
+      -v, --verbose         list full details about each topic
+      -p                    list only publishers
+      -s                    list only subscribers
+```
+
+### ROS Messages:
+
+ROS 'messages' layout the structure and data types of the data which a node will be publishing or subscribing. They contain the all the information needed to for a node to unambiguously identify the data name, the data type, the structure of the data, and whether the data is an input or output from the node.
+
+This information can be obtained from a topic by using the following rostopic command.
+
+```
+rostopic type [topic]
+```
+
+Which will typically generate data similar to this example.
+```
+$ rosmsg show geometry_msgs/Twist
+
+    geometry_msgs/Vector3 linear
+      float64 x
+      float64 y
+      float64 z
+    geometry_msgs/Vector3 angular
+      float64 x
+      float64 y
+      float64 z
+```
+
+## Understanding ROS Services & Parameters:
+
+In ROS a "service," is a mechanism for sending a *request* and waiting for a *response* between nodes.
