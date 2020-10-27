@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/indywsl/ROS-Practice/catkin_ws/install/setup.sh
